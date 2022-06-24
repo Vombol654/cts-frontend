@@ -16,12 +16,20 @@ const customStyles = {
   },
 };
 const Details = () => {
-  const [mentorData, setMentorData] = useState({});
+  const [mentorData, setMentorData] = useState({
+    name: "Mentor Name",
+    designation: "Mentor Designation",
+    expert: "Expert",
+    rating: 0,
+    images: "",
+    phone: "Phone Number",
+    email: "Mentor Email Id",
+  });
   const location = useLocation();
   const qs = queryString.parse(location.search);
   const { mentorId } = qs;
   useEffect(() => {
-    console.log(mentorId);
+    // console.log(mentorId);
     axios({
       url: `http://localhost:8085/mentordetail/${mentorId}`,
       method: "GET",
@@ -34,14 +42,17 @@ const Details = () => {
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    console.log(mentorData.images);
+  }, [mentorData]);
   return (
     <Fragment>
       <div className="container">
         <div className="row top">
           <div className="col-lg-5 col-md-5 col-sm-12 detail-left">
             <img
-              src={'../Images/anindya.jpg'}
-              // src={require("../Images/ananda.jpg")}
+              src={require(`../${mentorData.images}`)}
               alt="Card image cap"
             />
           </div>
@@ -56,11 +67,7 @@ const Details = () => {
           <div className="col-12 details-low">
             <p>{mentorData.about}</p>
             <div className="payment">
-              <button
-                type="button"
-                className="btn btn-info payment-btn"
-         
-              >
+              <button type="button" className="btn btn-info payment-btn">
                 Proceed to Payment
               </button>
             </div>
@@ -104,7 +111,7 @@ const Details = () => {
                 Submit
               </button>
             </form> */}
-          {/* </div>
+      {/* </div>
         </div>
       </Modal> */}
     </Fragment>
