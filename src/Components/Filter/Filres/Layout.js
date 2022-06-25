@@ -7,7 +7,6 @@ const Layout = (props) => {
   const handleNavigate = (mentorId) => {
     history.push(`/details?mentorId=${mentorId}`);
   };
-  console.log(`${mentorData.images}`);
   return (
     <Fragment>
       <div className="container-fluid">

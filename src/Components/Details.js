@@ -29,7 +29,6 @@ const Details = () => {
   const qs = queryString.parse(location.search);
   const { mentorId } = qs;
   useEffect(() => {
-    // console.log(mentorId);
     axios({
       url: `http://localhost:8085/mentordetail/${mentorId}`,
       method: "GET",
@@ -43,9 +42,6 @@ const Details = () => {
       });
   }, []);
 
-  useEffect(() => {
-    console.log(mentorData.images);
-  }, [mentorData]);
   return (
     <Fragment>
       <div className="container">
