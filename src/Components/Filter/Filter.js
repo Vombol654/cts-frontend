@@ -27,6 +27,7 @@ const Filter = () => {
     coursetype: course_type,
     language:languageId
   };
+  console.log(filterObj)
   useEffect(() => {
     axios({
       url: "http://localhost:8085/filter",

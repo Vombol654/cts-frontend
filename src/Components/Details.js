@@ -1,10 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
 import queryString from "query-string";
 import { useLocation } from "react-router";
-import Modal from "react-modal";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "../Styles/details.css";
-
 const customStyles = {
   content: {
     top: "50%",
@@ -16,8 +15,18 @@ const customStyles = {
   },
 };
 const Details = () => {
-  const [mentorData, setMentorData] = useState({});
+  const [mentorData, setMentorData] = useState({
+    name: "Mentor Name",
+    designation: "Mentor Designation",
+    expert: "Expert",
+    rating: 0,
+    images: "",
+    phone: "Phone Number",
+    email: "Mentor Email Id",
+  });
+  const [amount,setamount]=useState(0)
   const location = useLocation();
+  const history=useHistory()
   const qs = queryString.parse(location.search);
   const { mentorId } = qs;
   useEffect(() => {
@@ -29,19 +38,28 @@ const Details = () => {
     })
       .then((res) => {
         setMentorData(res.data.mentor);
+        setamount(res.data.mentor['cost'])
+        
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+  const handlePayment=()=>{
+    sessionStorage.setItem('amount',amount)
+history.push(`/payment`)
+
+  }
+  
   return (
     <Fragment>
       <div className="container">
         <div className="row top">
           <div className="col-lg-5 col-md-5 col-sm-12 detail-left">
             <img
-              src={'../Images/anindya.jpg'}
-              // src={require("../Images/ananda.jpg")}
+              // src={'../Images/anindya.jpg'}
+              // src={require(`../Images/anindya.jpg`)}
+              src={require(`../${mentorData.images}`)}
               alt="Card image cap"
             />
           </div>
@@ -59,7 +77,7 @@ const Details = () => {
               <button
                 type="button"
                 className="btn btn-info payment-btn"
-         
+                onClick={handlePayment}
               >
                 Proceed to Payment
               </button>
@@ -67,46 +85,6 @@ const Details = () => {
           </div>
         </div>
       </div>
-      {/* <Modal isOpen={loginmodalIsOpen} style={customStyles}>
-        <div>
-          <i
-            className="fa-solid fa-xmark cross"
-            onClick={modalIsCloseHandler}
-          ></i>
-          <div>
-            <form>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  placeholder="Enter email"
-                  // onChange={()=>userEmailHandler}
-                />
-                <small id="emailHelp" class="form-text text-muted">
-                  We'll never share your email with anyone else.
-                </small>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="text" class="form-control" placeholder="Name" />
-              </div>
-              <small class="form-text text-muted">
-                We'll never store your Password.
-              </small>
-              <button
-                type="submit"
-                class="btn btn-primary"
-                onClick={makePayment}
-              >
-                Submit
-              </button>
-            </form> */}
-          {/* </div>
-        </div>
-      </Modal> */}
     </Fragment>
   );
 };
