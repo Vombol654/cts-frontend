@@ -41,6 +41,9 @@
 .main-bottom-right input {
   width: 34em;
 }
+.suggession{
+  margin-left: 22em;
+}
 
 @media only screen and (max-width: 600px) {
     .main-content{
