@@ -6,14 +6,14 @@ const QuickSearchItem = (props) => {
   const { QuickSearchItemData } = props;
   const history = useHistory();
   const handleNavigate = (course_type) => {
-   const  languageId= sessionStorage.getItem('languageId')
-   if(languageId){
-    history.push(`/filter?course_type=${course_type}&languageId=${languageId}`);
-   }
-   else{
-    history.push(`/filter?course_type=${course_type}`);
-   }
-   
+    const languageId = sessionStorage.getItem("languageId");
+    if (languageId) {
+      history.push(
+        `/filter?course_type=${course_type}&languageId=${languageId}`
+      );
+    } else {
+      history.push(`/filter?course_type=${course_type}`);
+    }
   };
   return (
     <Fragment>
@@ -23,7 +23,8 @@ const QuickSearchItem = (props) => {
       >
         <img
           className="card-img-top"
-          src={require(`../../../${QuickSearchItemData.image}`)}
+          // src={require(`../../../${QuickSearchItemData.image}`)}
+          src={QuickSearchItemData.image}
           alt="Card image cap"
         />
         <div className="card-body">
