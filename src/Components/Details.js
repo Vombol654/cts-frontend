@@ -24,9 +24,9 @@ const Details = () => {
     phone: "Phone Number",
     email: "Mentor Email Id",
   });
-  const [amount,setamount]=useState(0)
+  const [amount, setamount] = useState(0);
   const location = useLocation();
-  const history=useHistory()
+  const history = useHistory();
   const qs = queryString.parse(location.search);
   const { mentorId } = qs;
   useEffect(() => {
@@ -38,19 +38,17 @@ const Details = () => {
     })
       .then((res) => {
         setMentorData(res.data.mentor);
-        setamount(res.data.mentor['cost'])
-        
+        setamount(res.data.mentor["cost"]);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-  const handlePayment=()=>{
-    sessionStorage.setItem('amount',amount)
-history.push(`/payment`)
+  const handlePayment = () => {
+    sessionStorage.setItem("amount", amount);
+    history.push(`/payment`);
+  };
 
-  }
-  
   return (
     <Fragment>
       <div className="container">

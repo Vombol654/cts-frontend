@@ -23,7 +23,8 @@ const QuickSearchItem = (props) => {
       >
         <img
           className="card-img-top"
-          src={require(`../../../${QuickSearchItemData.image}`)}
+          // src={require(`../../../${QuickSearchItemData.image}`)}
+          src={require(`../../../Images/ananda.jpg`)}
           alt="Card image cap"
         />
         <div className="card-body">

@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import QuickSearchItem from "./QuickSearchItem/QuickSearchItem";
 import "../../Styles/quickSearch.css";
 const QuickSearch = (props) => {
-  const {courseData}=props;
+  const { courseData } = props;
   return (
     <Fragment>
       <div className="quick">
@@ -11,11 +11,9 @@ const QuickSearch = (props) => {
       </div>
       <div className="container-fluid">
         <div className="row">
-          {courseData.map((item,index)=>{
-return <QuickSearchItem QuickSearchItemData={item} key={index} />
+          {courseData.map((item, index) => {
+            return <QuickSearchItem QuickSearchItemData={item} key={index} />;
           })}
-          
-         
         </div>
       </div>
     </Fragment>
