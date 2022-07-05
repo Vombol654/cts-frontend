@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import queryString from "query-string";
-import { useLocation } from "react-router";
+import { useLocation, useHistory } from "react-router";
 import Modal from "react-modal";
 import axios from "axios";
 import "../Styles/details.css";
@@ -97,6 +97,7 @@ const Details = ({ loginData }) => {
     services,
     spotsLeft = 100,
     tag = "Top",
+    curriculum = [],
     callCount = 2,
   } = mentorData;
 
@@ -111,7 +112,9 @@ const Details = ({ loginData }) => {
     email,
     skills,
   } = mentorData.mentor;
-  console.log(mentorData);
+
+  const history = useHistory();
+
   return (
     <div className="mentor-details-container">
       {/* <div className="navigate-container"> */}
@@ -120,7 +123,7 @@ const Details = ({ loginData }) => {
           <ion-icon class="md hydrated icon" name="home"></ion-icon>
         </Link>
         <span className="right-icon">&#10095;</span>
-        <Link to="/filter">Filter</Link>
+        <Link onClick={() => history.goBack()}>Filter</Link>
         <span className="right-icon">&#10095;</span>
         <Link to={`/details?mentorId=${_id}`}>{name}</Link>
         {/* </div> */}
@@ -157,11 +160,17 @@ const Details = ({ loginData }) => {
             <div className="locality">
               <div className="location">
                 <ion-icon class="md hydrated icon" name="pin"></ion-icon>
-                <span>{city}</span>
+                <span>
+                  {city.charAt(0).toUpperCase()}
+                  {city.slice(1)}
+                </span>
               </div>
               <div className="language">
                 <ion-icon class="md hydrated icon" name="mic"></ion-icon>
-                <span>{language}</span>
+                <span>
+                  {language.charAt(0).toUpperCase()}
+                  {language.slice(1)}
+                </span>
               </div>
             </div>
             {reviewCount > 0 && (
@@ -219,7 +228,7 @@ const Details = ({ loginData }) => {
                   <div className="service-item">
                     <ion-icon name="call" class="md hydrated icon"></ion-icon>
                     <span className="service-name">
-                      {typeof callCount === "number"
+                      {callCount !== "Regular"
                         ? callCount + " x "
                         : callCount + " "}
                       Call
@@ -250,11 +259,21 @@ const Details = ({ loginData }) => {
             })}
           </div>
           <div className="mentor-description">{about}</div>
+        </div>
+        <div className="mentorship-academic-details">
           <div className="mentor-skills">
-            <h3>Skilled Areas :</h3>
+            <h3>Mentor's Skilled Areas :</h3>
             <div className="mentor-skill-sets">
               {skills.map((skill) => {
                 return <span className="mentor-skill">{skill}</span>;
+              })}
+            </div>
+          </div>
+          <div className="mentor-curriculum-container">
+            <h3>Curriculum of the course :</h3>
+            <div className="mentor-curriculums">
+              {curriculum.map((skill) => {
+                return <span className="mentor-curriculum">{skill}</span>;
               })}
             </div>
           </div>
@@ -290,9 +309,9 @@ const Details = ({ loginData }) => {
           <div className="feature-item">
             <ion-icon name="call" class="md hydrated icon"></ion-icon>
             <p className="tag-line">
-              {typeof callCount === "number"
-                ? `Up to ${callCount} ${
-                    callCount > 1 ? "calls" : "call"
+              {callCount !== "Regular"
+                ? `Up to ${parseInt(callCount)} ${
+                    parseInt(callCount) > 1 ? "calls" : "call"
                   } per month`
                 : `Regular 1-on-1 calls, per agreement with mentor`}
             </p>

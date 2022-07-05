@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import "../../../Styles/pagination.css";
 
 const Pagenition = (props) => {
-  const [active, setActive] = useState(1);
+  const { onPageChange, totalPages, activePage } = props;
+
+  const [active, setActive] = useState(activePage);
   const [totalPage, setTotalPage] = useState(0);
-  const { onPageChange, totalPages } = props;
 
   useEffect(() => {
     setTotalPage(totalPages);
@@ -22,9 +23,9 @@ const Pagenition = (props) => {
     console.log(totalPage);
   }, [totalPage]);
 
-  //   useEffect(() => {
-  //     console.log(active);
-  //   }, [active]);
+  useEffect(() => {
+    console.log("fr Pg Active Page " + activePage);
+  }, [activePage]);
 
   const PageNo = () => {
     let pages = [];

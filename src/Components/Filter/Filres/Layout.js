@@ -22,13 +22,11 @@ const Layout = (props) => {
     curriculum = [],
     // company = "Cognizant Technology Solutions",
     tag = "Top",
-    callCount = 2,
+    callCount,
   } = props.mentorData;
 
   const { _id, name, city, language, imageUrl, company, designation, skills } =
     props.mentorData.mentor;
-
-  console.log(services);
 
   const ratingComponent = (rating) => {
     let rate = [];

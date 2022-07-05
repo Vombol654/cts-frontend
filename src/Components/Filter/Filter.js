@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import { connect } from "react-redux";
 import axios from "axios";
 import queryString from "query-string";
 import "../../Styles/filter.css";
+import Loading from "../Loading";
 import Layout from "./Filres/Layout";
 import Pagenition from "./Filres/Pagenition";
 import Button from "../Button";
-const Filter = () => {
+
+import { filter } from "../../store/action/filterAction";
+
+const Filter = ({ filterData, filter }) => {
   const [isFilterVisible, setIsFilterVisible] = useState(true);
   const [mentordetails, setmentordetails] = useState([]);
   const [courses, setCourses] = useState("");
@@ -25,26 +30,16 @@ const Filter = () => {
   const location = useLocation();
   const qs = queryString.parse(location.search);
   const { course_type, languageId } = qs;
-  // console.log(qs);
+  const selectCourse = document.getElementById("select-course");
+  const selectLanguage = document.getElementById("select-lang");
   const filterObj = {
     coursetype: course_type,
     language: languageId,
   };
+
   useEffect(() => {
-    axios({
-      url: "http://localhost:8085/filter",
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: filterObj,
-    })
-      .then((res) => {
-        setmentordetails(res.data.mentor);
-        // setCoursetype(course_type)
-        setpageCount(res.data.Data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    filter(filterObj);
+
     axios({
       url: "http://localhost:8085/language",
       method: "GET",
@@ -52,7 +47,6 @@ const Filter = () => {
     })
       .then((res) => {
         setlanguage(res.data.language);
-        setpageCount(res.data.Data);
       })
       .catch((err) => {
         console.log(err);
@@ -64,17 +58,19 @@ const Filter = () => {
       headers: { "Content-Type": "application/json" },
     }).then((res) => {
       setCourses(res.data.coursetypes);
-      setpageCount(res.data.Data);
     });
-    // axios({
-    //   url: "http://localhost:8085/mentorservices",
-    //   method: "GET",
-    //   headers: { "Content-Type": "application/json" },
-    // }).then((res) => {
-    //   setServices(res.data.services);
-    //   setpageCount(res.data.Data);
-    // });
   }, []);
+
+  useEffect(() => {
+    setpage(1);
+    setmentordetails(filterData.filteredData);
+    setpageCount(filterData.pageCount);
+  }, [filterData]);
+
+  useEffect(() => {
+    console.log("fr Fil " + page);
+  }, [page]);
+
   const handleSortChange = (sort) => {
     const filterSortObj = {
       coursetype: course_type ? course_type : coursesI,
@@ -85,21 +81,9 @@ const Filter = () => {
       sort: sort,
       page,
     };
-    axios({
-      url: "http://localhost:8085/filter",
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: filterSortObj,
-    })
-      .then((res) => {
-        setmentordetails(res.data.mentor);
-        setsort(sort);
-        setpageCount(res.data.Data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    // console.log(filterSortObj)
+
+    filter(filterSortObj);
+    setsort(sort);
   };
   const handleCostChange = (lcost, hcost) => {
     const filterCostObj = {
@@ -111,22 +95,10 @@ const Filter = () => {
       sort: sort,
       page,
     };
-    axios({
-      url: "http://localhost:8085/filter",
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: filterCostObj,
-    })
-      .then((res) => {
-        setmentordetails(res.data.mentor);
-        sethcost(hcost);
-        setlcost(lcost);
-        setpageCount(res.data.Data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    console.log(filterCostObj);
+
+    filter(filterCostObj);
+    sethcost(hcost);
+    setlcost(lcost);
   };
   const handleCourseChange = (course) => {
     const course_id = course === "" || course === "0" ? "" : course;
@@ -139,25 +111,10 @@ const Filter = () => {
       sort: sort,
       page,
     };
-    console.log(filterCourseObj);
-    axios({
-      url: "http://localhost:8085/filter",
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: filterCourseObj,
-    })
-      .then((res) => {
-        setmentordetails(res.data.mentor);
-        setCoursesI(course_id);
-        setpageCount(res.data.Data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    filter(filterCourseObj);
+    setCoursesI(course_id);
   };
   const handleLanguageChange = (language_id) => {
-    // console.log(event);
-    // const language_id = language === "" || language === 0 ? "" : language;
     const filterLangObj = {
       coursetype: course_type ? course_type : coursesI,
       language: language_id,
@@ -167,21 +124,8 @@ const Filter = () => {
       sort: sort,
       page,
     };
-    axios({
-      url: "http://localhost:8085/filter",
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: filterLangObj,
-    })
-      .then((res) => {
-        console.log(res.data.mentor);
-        setmentordetails(res.data.mentor);
-        setlanguageI(language_id);
-        setpageCount(res.data.Data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    filter(filterLangObj);
+    setlanguageI(language_id);
   };
   const handleServices = (serviceId) => {
     const index = services.indexOf(serviceId);
@@ -200,20 +144,8 @@ const Filter = () => {
       sort: sort,
     };
 
-    axios({
-      url: "http://localhost:8085/filter",
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: filterFeatureObj,
-    })
-      .then((res) => {
-        setmentordetails(res.data.mentor);
-        setServices(services);
-        setpageCount(res.data.Data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    filter(filterFeatureObj);
+    setServices(services);
   };
   const handlePageClick = (pageNo) => {
     const filterPageObj = {
@@ -226,19 +158,8 @@ const Filter = () => {
       page: pageNo,
       itemsPerPage: 2,
     };
-    axios({
-      url: "http://localhost:8085/filter",
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: filterPageObj,
-    })
-      .then((res) => {
-        setmentordetails(res.data.mentor);
-        setpage(pageNo);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    filter(filterPageObj);
+    setpage(pageNo);
   };
 
   const resetFilter = () => {
@@ -262,34 +183,43 @@ const Filter = () => {
 
       elements[index].checked = !value;
     };
-    const selectCourse = document.getElementById("select-course");
-    const selectLanguage = document.getElementById("select-lang");
-    selectCourse.value = 0;
-    selectLanguage.value = 0;
 
     costRadio.forEach(reset);
     serviceCheckbox.forEach(reset);
     sortRadio.forEach(reset);
-    axios({
-      url: "http://localhost:8085/filter",
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      data: {},
-    })
-      .then((res) => {
-        setmentordetails(res.data.mentor);
-        setCoursesI("");
-        setlanguageI("");
-        setServices([]);
-        setsort(1);
-        setlcost("");
-        sethcost("");
-        setpage(1);
-        setpageCount(res.data.Data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    if (!course_type) {
+      selectCourse.disabled = false;
+      selectCourse.value = 0;
+      filter(filterObj);
+    }
+    if (!languageId) {
+      selectCourse.disabled = false;
+      selectLanguage.value = 0;
+      filter(filterObj);
+    } else {
+      filter({});
+    }
+    setCoursesI("");
+    setlanguageI("");
+    setServices([]);
+    setsort(1);
+    setlcost("");
+    sethcost("");
+    setpage(1);
+    // axios({
+    //   url: "http://localhost:8085/filter",
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   data: {},
+    // })
+    //   .then((res) => {
+    //     setmentordetails(res.data.mentor);
+    //     setpageCount(res.data.Data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   return (
@@ -307,16 +237,22 @@ const Filter = () => {
             <select
               id="select-course"
               defaultValue={0}
+              // value={course_type ? course_type : "0"}
+              disabled={course_type ? true : false}
               onChange={(e) => handleCourseChange(e.target.value)}
             >
-              <option value="0" disabled>
+              <option value="0" disabled selected={course_type ? true : false}>
                 Select Course
               </option>
               <option value="">All Courses</option>
               {courses &&
                 courses.map((item, index) => {
                   return (
-                    <option value={item._id} key={index}>
+                    <option
+                      value={item._id}
+                      key={index}
+                      selected={course_type === item._id ? true : false}
+                    >
                       {item.name}
                     </option>
                   );
@@ -515,19 +451,41 @@ const Filter = () => {
           </div>
         </div>
       </div>
-      <div className="layout-grid">
-        {mentordetails.length > 0 ? (
-          mentordetails.map((item) => {
-            return <Layout mentorData={item} key={item._id} />;
-          })
-        ) : (
-          <p className="no-result">No Result!</p>
-        )}
-      </div>
+      {filterData.loading && (
+        <Loading content="Filtering data please wait..." />
+      )}
+      {!filterData.loading && filterData.filtered && (
+        <div className="layout-grid">
+          {mentordetails.length > 0 ? (
+            mentordetails.map((item) => {
+              return <Layout mentorData={item} key={item._id} />;
+            })
+          ) : (
+            <p className="no-result">No Result!</p>
+          )}
+        </div>
+      )}
       {pageCount > 1 || mentordetails.length > 0 ? (
-        <Pagenition onPageChange={handlePageClick} totalPages={pageCount} />
+        <Pagenition
+          onPageChange={handlePageClick}
+          activePage={page}
+          totalPages={pageCount}
+        />
       ) : null}
     </div>
   );
 };
-export default Filter;
+
+const mapStateToProps = (state) => {
+  return {
+    filterData: state.Filter,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    filter: (filterObj) => dispatch(filter(filterObj)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);

@@ -24,14 +24,14 @@ const Header = ({ loginData, logoutUser }) => {
   }, [toggle]);
 
   useEffect(() => {
-    if (!loginData.loggedIn) {
-      console.log("Logout");
-      if (
-        history.location.pathname !== "/Login" &&
-        history.location.pathname !== "/"
-      )
-        history.push("/");
-    }
+    // if (!loginData.loggedIn) {
+    //   console.log("Logout");
+    //   if (
+    //     history.location.pathname !== "/Login" &&
+    //     history.location.pathname !== "/"
+    //   )
+    //     history.push("/");
+    // }
   }, [loginData]);
 
   return (

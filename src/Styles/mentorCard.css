@@ -8,6 +8,7 @@
   border-radius: 1rem;
   padding: 3.2rem;
   color: #292933;
+  width: 100%;
   /* width: 80%;
   margin: 0 auto; */
 }
@@ -117,7 +118,7 @@
   color: darkorange;
 }
 
-.mentor-card .mentor-services {
+/* .mentor-card .mentor-services {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -136,6 +137,32 @@
   font-size: 1.4rem;
   font-weight: 600;
   color: #292933;
+} */
+
+.mentor-card .mentor-services {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+.mentor-card .service-item {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1.2rem;
+  gap: 1rem;
+  /* border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd; */
+  padding: 1.5rem 0 0.5rem 0;
+}
+
+.mentor-card .service-item .icon,
+.mentor-card .service-item p {
+  padding-left: 1rem;
 }
 
 .mentor-card .mentor-description {
@@ -163,6 +190,9 @@
 }
 
 .mentor-card .mentorship-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   font-size: 1.6rem;
   position: relative;
   padding: 1.6rem 0;
@@ -196,28 +226,6 @@
 
 .mentor-card .mentorship-expectation {
   font-weight: 700;
-}
-
-.mentor-card .mentor-services {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.mentor-card .service-item {
-  display: flex;
-  /* flex-direction: column; */
-  align-items: center;
-  justify-content: flex-start;
-  font-size: 1.2rem;
-  gap: 1rem;
-  /* border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd; */
-  padding: 1.5rem 0 0.5rem 0;
-}
-
-.mentor-card .service-item .icon,
-.mentor-card .service-item p {
-  padding-left: 1rem;
 }
 
 .mentor-card .icon-container {

@@ -14,7 +14,7 @@
   color: #ccccff;
 }
 
-.spinner-border {
+.loading .spinner-border {
   font-size: 1.6rem;
   height: 4rem;
   width: 4rem;

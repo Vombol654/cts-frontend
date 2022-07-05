@@ -26,6 +26,7 @@ const proposeFail = (error) => {
 export const propose = (data, proposefrom) => {
   const url =
     proposefrom === "mentor" ? "http://localhost:8085/mentorshipdetail" : "";
+  console.log(data);
   return (dispatch) => {
     dispatch(proposeStart());
     fetch(url, {

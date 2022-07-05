@@ -1,12 +1,75 @@
-import { Fragment } from "react";
-import Image from "../../Images/main.jpg";
+import { Fragment, useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import SelectBox from "../SelectBox";
+
 import MainImage from "../../Images/mentoring.png";
 import "../../Styles/wallpaper.css";
+
 const Wallpaper = (props) => {
+  const history = useHistory();
+  const [mentorData, setMentorData] = useState([]);
+  const [inputText, setinputText] = useState("");
+  const [suggessionData, setsuggessionData] = useState([]);
   const { languageData } = props;
-  const handleLocationChange = (event) => {
+
+  const handleLanguageChange = (event) => {
     const languageId = event.target.value;
     sessionStorage.setItem("languageId", languageId);
+    axios({
+      url: `http://localhost:8085/mentorshipdetails/${languageId}`,
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        console.log(res.data.mentor);
+        setMentorData(res.data.mentor);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleInputText = (event) => {
+    const inputText = event.target.value;
+    let suggessionData = [];
+    suggessionData = mentorData.filter((item) => {
+      console.log(item.mentor.name.toLowerCase(), inputText.toLowerCase());
+      return item.mentor.name.toLowerCase().includes(inputText.toLowerCase());
+    });
+    setsuggessionData(suggessionData);
+    setinputText(inputText);
+  };
+  const handleNavigate = (id) => {
+    history.push(`/details?mentorId=${id}`);
+  };
+
+  const showSuggession = () => {
+    if (suggessionData.length == 0 && inputText == "") {
+      return null;
+    }
+    if (suggessionData.length > 0 && inputText == "") {
+      return null;
+    }
+    if (suggessionData.length == 0 && inputText) {
+      return (
+        <div className="suggessions">
+          <span>No Search Results Found</span>
+        </div>
+      );
+    }
+    return (
+      <div className="suggessions">
+        {suggessionData.map((item, index) => (
+          <span
+            className="suggession"
+            key={index}
+            onClick={() => handleNavigate(item.mentor._id)}
+          >
+            {item.mentor.name}
+          </span>
+        ))}
+      </div>
+    );
   };
   return (
     <Fragment>
@@ -23,7 +86,7 @@ const Wallpaper = (props) => {
               <select
                 className="form-select"
                 aria-label="Default select example"
-                onChange={handleLocationChange}
+                onChange={handleLanguageChange}
               >
                 <option value="0">Open this select menu</option>
                 {languageData.map((item, index) => (
@@ -40,9 +103,11 @@ const Wallpaper = (props) => {
                   className="form-control"
                   id="floatingInput"
                   placeholder="Ananda Sankar Panda"
+                  onChange={handleInputText}
                 />
                 <label htmlFor="floatingInput">Mentor's Name</label>
               </div>
+              {showSuggession()}
             </div>
           </div>
         </div>

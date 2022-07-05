@@ -5,10 +5,9 @@ const SelectBox = ({
   id,
   label,
   value,
-  error,
-  onFocus,
+  error = "",
   onChange,
-  onBlur,
+  otherprops,
   type,
 }) => {
   return (
@@ -23,8 +22,7 @@ const SelectBox = ({
           // defaultValue="none"
           value={value === "" ? "none" : value}
           onChange={onChange}
-          onFocus={onFocus}
-          onBlur={onBlur}
+          {...otherprops}
         >
           <option value="none" disabled>
             Select {label}

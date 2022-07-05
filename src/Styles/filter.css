@@ -124,6 +124,10 @@
   width: 80%;
 }
 
+select:disabled {
+  cursor: not-allowed;
+}
+
 @media (max-width: 960px) {
   .filter-page {
     grid-template-columns: 0.9fr 1.1fr;

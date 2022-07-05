@@ -123,6 +123,7 @@ const CourseForm = ({ myData, proposeData, proposeNewMentorship }) => {
   };
 
   const proposeMentorship = (call) => {
+    console.log("Call Count " + call);
     proposeNewMentorship(
       {
         totalIntake: totalIntake.value,

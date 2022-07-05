@@ -4,6 +4,7 @@ import { loginReducer } from "./loginReducer";
 import { mentorReducer } from "./mentorReducer";
 import { signupReducer } from "./signupReducer";
 import { proposeReducer } from "./proposeReducer";
+import { filterReducer } from "../reducer/filterReducer";
 
 export const reducer = combineReducers({
   Login: loginReducer,
@@ -11,4 +12,5 @@ export const reducer = combineReducers({
   Mentor: mentorReducer,
   Courses: coursesReducer,
   Proposed: proposeReducer,
+  Filter: filterReducer,
 });
