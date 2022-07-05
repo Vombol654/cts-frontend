@@ -191,11 +191,12 @@ const Filter = ({ filterData, filter }) => {
     if (!course_type) {
       selectCourse.disabled = false;
       selectCourse.value = 0;
-      filter(filterObj);
     }
     if (!languageId) {
       selectCourse.disabled = false;
       selectLanguage.value = 0;
+    }
+    if (course_type || languageId) {
       filter(filterObj);
     } else {
       filter({});
@@ -207,19 +208,6 @@ const Filter = ({ filterData, filter }) => {
     setlcost("");
     sethcost("");
     setpage(1);
-    // axios({
-    //   url: "http://localhost:8085/filter",
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   data: {},
-    // })
-    //   .then((res) => {
-    //     setmentordetails(res.data.mentor);
-    //     setpageCount(res.data.Data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
   return (
@@ -264,6 +252,7 @@ const Filter = ({ filterData, filter }) => {
             <select
               id="select-lang"
               defaultValue="0"
+              disabled={languageId ? true : false}
               onChange={(e) =>
                 handleLanguageChange(
                   e.target.value === "0" || e.target.value === ""
@@ -272,14 +261,20 @@ const Filter = ({ filterData, filter }) => {
                 )
               }
             >
-              <option value="0" disabled>
+              <option value="0" disabled selected={languageId ? true : false}>
                 select Language
               </option>
               <option value="">All Language</option>
               {language &&
                 language.map((item, index) => {
                   return (
-                    <option value={item.language_id} key={index}>
+                    <option
+                      value={item.language_id}
+                      key={index}
+                      selected={
+                        languageId === `${item.language_id}` ? true : false
+                      }
+                    >
                       {item.name}
                     </option>
                   );

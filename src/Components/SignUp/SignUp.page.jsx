@@ -685,11 +685,18 @@ const SignUp = ({ user, signupUser }) => {
             Loading...
           </Toast.Body>
         )}
-        {user.signed && !user.loading && (
-          <Toast.Body>
-            Hello, {user.user.firstname} {user.user.lastname}.
-          </Toast.Body>
-        )}
+        {user.loggedIn &&
+          !user.loading &&
+          user["user"]["userType"] === "mentee" && (
+            <Toast.Body>
+              Hello, {user.user.firstname} {user.user.lastname}.
+            </Toast.Body>
+          )}
+        {user.loggedIn &&
+          !user.loading &&
+          user["user"]["userType"] === "mentor" && (
+            <Toast.Body>Hello, {user.user.name}.</Toast.Body>
+          )}
         {user.error && !user.loading && <Toast.Body>{user.error}</Toast.Body>}
       </Toast>
     </>
