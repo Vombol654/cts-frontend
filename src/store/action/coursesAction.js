@@ -25,13 +25,11 @@ const getCourseFail = (error) => {
 
 const url = "http://localhost:8085/coursetypes";
 export const getCourses = () => {
-  console.log("Get Courses Action...");
   return (dispatch) => {
     dispatch(getCourseStart());
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data.coursetypes);
         dispatch(getCourseSuccess(data.coursetypes));
       })
       .catch((err) => {

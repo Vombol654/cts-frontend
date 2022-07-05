@@ -1,11 +1,46 @@
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import "../Styles/CourseCard.css";
 
-const CourseCard = ({ course, user }) => {
-  const { name, image, content, skillsRequired = [], mentors } = course;
-  console.log(skillsRequired);
-  const applied = mentors.find((mentor) => {
-    return mentor._id === user._id;
-  });
+const CourseCard = ({ course, user, mentorships }) => {
+  const { _id, name, image, content, skillsRequired = [], mentors } = course;
+
+  const [applied, setApplied] = useState(null);
+  const [approved, setApproved] = useState(null);
+
+  const history = useHistory();
+
+  useEffect(() => {
+    setApproved(
+      mentors.find((mentor) => {
+        return mentor._id === user._id;
+      })
+    );
+
+    setApplied(
+      mentorships.find((mentor) => {
+        return mentor.course_id === _id;
+      })
+    );
+  }, [mentorships]);
+  const redirectToCourseFormPage = async (course) => {
+    await pushdataInsessionStorage(course)
+      .then((res) => {
+        history.push(`/courseform`);
+      })
+      .catch((err) => alert(err));
+  };
+
+  const pushdataInsessionStorage = async (course) => {
+    return new Promise(function (resolve, reject) {
+      sessionStorage.setItem("course", JSON.stringify(course));
+      if (sessionStorage.getItem("course")) {
+        resolve("Data set in session Storage");
+      } else {
+        reject("Sorry for the error...");
+      }
+    });
+  };
 
   return (
     <div className="course-card">
@@ -25,12 +60,21 @@ const CourseCard = ({ course, user }) => {
         </div>
       </div>
       <p className="summary">{content}</p>
-      {applied ? (
+      {approved ? (
         <button className="course-apply-btn" disabled>
-          Applied
+          Go To Course
+        </button>
+      ) : applied ? (
+        <button className="course-apply-btn" disabled>
+          Proposed
         </button>
       ) : (
-        <button className="course-apply-btn">Apply</button>
+        <button
+          className="course-apply-btn"
+          onClick={() => redirectToCourseFormPage(course)}
+        >
+          Apply
+        </button>
       )}
     </div>
   );

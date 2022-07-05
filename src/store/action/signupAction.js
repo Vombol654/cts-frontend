@@ -23,7 +23,6 @@ const signupFail = (error) => {
 };
 
 export const signup = (user) => {
-  console.log("Signup Function from signupAction.js");
   var url = "http://localhost:8085/signup/";
   url += user.userType === "mentee" ? "mentee" : "mentor";
 

@@ -8,6 +8,7 @@ import Payment from "./Payment";
 import Login from "./Login/Login.page";
 import SignUp from "./SignUp/SignUp.page";
 import Courses from "./Courses/Courses.page";
+import CourseForm from "./Courses/CourseForm.page";
 function Router() {
   return (
     <BrowserRouter>
@@ -16,6 +17,7 @@ function Router() {
       <Route path="/filter" component={Filter} />
       <Route path="/Courses" component={Courses} />
       <Route path="/details" component={Details} />
+      <Route path="/courseform" component={CourseForm} />
       <Route path="/payment" component={Payment} />
       <Route path="/Login" component={Login} />
       <Route path="/SignUp" component={SignUp} />

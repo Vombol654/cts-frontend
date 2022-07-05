@@ -16,8 +16,6 @@ export const loginReducer = (state = initialState, { type, payload }) => {
       return { ...state, loading: true };
 
     case LOGIN_SUCCESS:
-      // console.log(payload);
-      // const { user, userType } = payload;
       return {
         ...state,
         user: payload,
@@ -27,8 +25,6 @@ export const loginReducer = (state = initialState, { type, payload }) => {
       };
 
     case LOGIN_FAIL:
-      // console.log(payload);
-      // const { error } = payload;
       return { ...state, loading: false, loggedIn: false, error: payload };
     case LOGOUT:
       return { ...initialState };

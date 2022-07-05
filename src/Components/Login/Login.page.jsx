@@ -11,10 +11,14 @@ import Toast from "react-bootstrap/Toast";
 import { Link, useHistory } from "react-router-dom";
 
 import { validate } from "../../validate";
+import {
+  setMentor,
+  setMentorshipDetails,
+} from "../../store/action/mentorAction";
 
 const defaultState = { value: "", err: "", valid: false };
 
-const Login = ({ user, signed, loginUser }) => {
+const Login = ({ user, signed, loginUser, setMentorship }) => {
   const [email, setEmail] = useState(defaultState);
   const [password, setPassword] = useState(defaultState);
   const [showToast, setShowToast] = useState(false);
@@ -43,8 +47,11 @@ const Login = ({ user, signed, loginUser }) => {
   };
 
   useEffect(() => {
-    console.log(user, showToast);
-    if (!showToast && user.loggedIn) history.push("/");
+    if (!showToast && user.loggedIn) {
+      setTimeout(() => {
+        history.push("/");
+      }, 500);
+    }
   }, [user, showToast]);
 
   useEffect(() => {
@@ -54,6 +61,10 @@ const Login = ({ user, signed, loginUser }) => {
         : defaultState
     );
   }, [signed]);
+
+  useEffect(() => {
+    console.log("USER ", user);
+  }, [user]);
 
   return (
     <>
@@ -152,6 +163,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loginUser: (loginData) => dispatch(login(loginData)),
+    setMentorship: (mentorId) => dispatch(setMentorshipDetails(mentorId)),
   };
 };
 

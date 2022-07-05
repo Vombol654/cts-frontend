@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "../Styles/multiInput.css";
-import { validate } from "../validate";
 
 const MultiInput = ({ label, style = {}, setState, state }) => {
   const [value, setValue] = useState("");
@@ -21,17 +20,7 @@ const MultiInput = ({ label, style = {}, setState, state }) => {
   }, [data]);
 
   return (
-    <div
-      className="input-group"
-      style={style}
-      // onFocus={() => {
-      //   console.log("In");
-      // }}
-      // onBlur={() => {
-      //   console.log("Out");
-      //   validate({ field: "skills", value: state.value, setState });
-      // }}
-    >
+    <div className="input-group" style={style}>
       <div className="multi-input-container">
         <div className="input-field">
           <label className={value ? "" : "shrink"}>{label}</label>

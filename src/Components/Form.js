@@ -1,8 +1,13 @@
 import "../Styles/form.css";
 
-const Form = ({ children, submitHandler, ...otherprops }) => {
+const Form = ({
+  children,
+  className = "grid-col-1",
+  submitHandler,
+  ...otherprops
+}) => {
   return (
-    <form onSubmit={submitHandler} {...otherprops}>
+    <form className={className} onSubmit={submitHandler} {...otherprops}>
       {children}
     </form>
   );

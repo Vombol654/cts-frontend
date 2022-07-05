@@ -7,23 +7,28 @@ const Layout = (props) => {
   const history = useHistory();
   // const { mentorData } = props;
   const {
-    _id,
-    about,
-    designation,
-    expert,
+    about = "",
+    // designation,
+    // expert,
     rating,
-    reviewCount = 40,
-    images,
-    name,
-    language,
-    city,
-    features,
+    reviewCount,
+    // imageUrl,
+    // name,
+    // language,
+    // city,
+    services,
     cost,
     spotsLeft = 100,
-    company = "Cognizant Technology Solutions",
+    curriculum = [],
+    // company = "Cognizant Technology Solutions",
     tag = "Top",
     callCount = 2,
   } = props.mentorData;
+
+  const { _id, name, city, language, imageUrl, company, designation, skills } =
+    props.mentorData.mentor;
+
+  console.log(services);
 
   const ratingComponent = (rating) => {
     let rate = [];
@@ -59,7 +64,8 @@ const Layout = (props) => {
       <div className="mentor-card">
         <span className="spots-left">Only {spotsLeft} Spots Left</span>
         <div className="mentor-img">
-          <img src={require(`../../../${images}`)} alt={name} />
+          {/* <img src={require(`../../../${images}`)} alt={name} /> */}
+          <img src={imageUrl} alt={name} />
         </div>
         <div className="mentor-details">
           <div className="mentor-details-header">
@@ -84,14 +90,20 @@ const Layout = (props) => {
               </p>
             </div>
             <div className="locality">
-            <div className="location">
-              <ion-icon class="md hydrated icon" name="pin"></ion-icon>
-              <span>{city}</span>
-            </div>
-            <div className="language">
-              <ion-icon class="md hydrated icon" name="mic"></ion-icon>
-              <span>{language}</span>
-            </div>
+              <div className="location">
+                <ion-icon class="md hydrated icon" name="pin"></ion-icon>
+                <span>
+                  {city.charAt(0).toUpperCase()}
+                  {city.slice(1)}
+                </span>
+              </div>
+              <div className="language">
+                <ion-icon class="md hydrated icon" name="mic"></ion-icon>
+                <span>
+                  {language.charAt(0).toUpperCase()}
+                  {language.slice(1)}
+                </span>
+              </div>
             </div>
             {reviewCount > 0 && (
               <div className="mentor-review">
@@ -103,9 +115,36 @@ const Layout = (props) => {
                 <span className="review-count">({reviewCount} reviews)</span>
               </div>
             )}
+            {reviewCount === 0 && (
+              <div className="mentor-review">
+                <div className="ratings">
+                  <ion-icon
+                    name="star-outline"
+                    class="md hydrated icon"
+                  ></ion-icon>
+                  <ion-icon
+                    name="star-outline"
+                    class="md hydrated icon"
+                  ></ion-icon>
+                  <ion-icon
+                    name="star-outline"
+                    class="md hydrated icon"
+                  ></ion-icon>
+                  <ion-icon
+                    name="star-outline"
+                    class="md hydrated icon"
+                  ></ion-icon>
+                  <ion-icon
+                    name="star-outline"
+                    class="md hydrated icon"
+                  ></ion-icon>
+                </div>
+                <span className="review-count">({reviewCount} reviews)</span>
+              </div>
+            )}
           </div>
           <div className="mentor-services">
-            {features.map(({ name }) => {
+            {services.map((name) => {
               if (name === "chat") {
                 return (
                   <div className="service-item">
@@ -121,7 +160,7 @@ const Layout = (props) => {
                   <div className="service-item">
                     <ion-icon name="call" class="md hydrated icon"></ion-icon>
                     <span className="service-name">
-                      {callCount.match(/[0-9]/g)
+                      {callCount !== "Regular"
                         ? callCount + " x "
                         : callCount + " "}
                       Call
@@ -153,7 +192,7 @@ const Layout = (props) => {
           </div>
           <div className="mentor-description">{about.substring(0, 250)}...</div>
           <div className="mentor-skill-sets">
-            {expert.split(",").map((skill) => {
+            {curriculum.map((skill) => {
               return <span className="mentor-skill">{skill}</span>;
             })}
           </div>
@@ -190,7 +229,7 @@ const Layout = (props) => {
           <div className="feature-item">
             <ion-icon name="call" class="md hydrated icon"></ion-icon>
             <p className="tag-line">
-              {callCount.match(/[0-9]/g)
+              {callCount !== "Regular"
                 ? `Up to ${callCount} ${
                     parseInt(callCount) > 1 ? "calls" : "call"
                   } per month`
@@ -203,7 +242,7 @@ const Layout = (props) => {
           <span>/month</span>
         </div>
         <div className="view-profile">
-          <button onClick={() => handleNavigate(_id)}>View Profile</button>
+          <button onClick={() => handleNavigate(_id)}>Read More</button>
         </div>
       </div>
     </Fragment>

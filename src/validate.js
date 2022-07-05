@@ -192,6 +192,81 @@ export const validate = async ({ field, value, setState }, match = "") => {
       }
       setState({ value, err, valid });
       return;
+
+    case "totalIntake":
+      if (value === "") {
+        err = "Please fill the total intake of your service";
+        valid = false;
+      } else if (value.match(/[^0-9]/g)) {
+        err = "Number only allowed for total intake";
+        valid = false;
+      } else {
+        err = "";
+        valid = true;
+      }
+      setState({ value, err, valid });
+      return;
+
+    case "callcount":
+      if (value === "") {
+        err = "Please fill the Call count per month";
+        valid = false;
+      } else if (value.match(/[^0-9a-zA-Z]/g)) {
+        err = "Space or Special Characters are not allowed";
+        valid = false;
+      } else {
+        err = "";
+        valid = true;
+      }
+      setState({ value, err, valid });
+      return;
+
+    case "curriculum":
+      if (value.length < 1) {
+        err = "You need to add atleast one concept";
+        valid = false;
+      } else {
+        err = "";
+        valid = true;
+      }
+      setState({ value, err, valid });
+      return valid;
+
+    case "services":
+      if (value.length < 1) {
+        err = "You need to add atleast one service";
+        valid = false;
+      } else {
+        err = "";
+        valid = true;
+      }
+      setState({ value, err, valid });
+      return valid;
+
+    case "about":
+      if (value === "") {
+        err = "Please fill about your mentorship";
+        valid = false;
+      } else {
+        err = "";
+        valid = true;
+      }
+      setState({ value, err, valid });
+      return;
+
+    case "cost":
+      if (value === "") {
+        err = "Please fill your expected fee";
+        valid = false;
+      } else if (value.match(/[^0-9]/g)) {
+        err = "Fee should be in numbers";
+        valid = false;
+      } else {
+        err = "";
+        valid = true;
+      }
+      setState({ value, err, valid });
+      return;
   }
 };
 

@@ -10,7 +10,6 @@ const initialState = {
 const { SIGNUP_START, SIGNUP_SUCCESS, SIGNUP_FAIL } = signupActionType;
 
 export const signupReducer = (state = initialState, { type, payload }) => {
-  console.log(type);
   switch (type) {
     case SIGNUP_START:
       return { ...state, loading: true };

@@ -120,6 +120,10 @@
   /* transform: translate(-50%, -50%); */
 }
 
+.filter-reset .btn-login {
+  width: 80%;
+}
+
 @media (max-width: 960px) {
   .filter-page {
     grid-template-columns: 0.9fr 1.1fr;

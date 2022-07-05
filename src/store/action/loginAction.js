@@ -1,4 +1,5 @@
 import { loginActionType } from "../actionTypes/loginActionType";
+import { setMentorshipDetails } from "./mentorAction";
 
 const { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } = loginActionType;
 
@@ -25,7 +26,6 @@ const loginFail = (error) => {
 const url = "http://localhost:8085/login";
 
 export const login = (user) => {
-  console.log("Login Function from loginAction.js");
   return (dispatch) => {
     dispatch(loginStart());
     fetch(url, {
@@ -39,6 +39,9 @@ export const login = (user) => {
       .then((data) => {
         if (data.isAuthenticated) {
           dispatch(loginSuccess(data.user));
+          if (data.user.userType === "mentor") {
+            dispatch(setMentorshipDetails(data.user._id));
+          }
         } else {
           dispatch(loginFail(data.message));
         }

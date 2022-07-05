@@ -13,7 +13,6 @@ export const coursesReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case GET_COURSES_START:
       return { ...state, loading: true };
-
     case GET_COURSES_SUCCESS:
       return {
         courses: payload,

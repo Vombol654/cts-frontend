@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import HeaderCartButton from "./Cart/HeaderCartButton";
 import "../Styles/header.css";
 import Icons from "../Images/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { logout } from "../store/action/loginAction";
@@ -11,6 +11,9 @@ import UserDropdown from "./userDropdown";
 
 const Header = ({ loginData, logoutUser }) => {
   const [toggle, setToggle] = useState(false);
+
+  const history = useHistory();
+
   const logoutHandler = () => {
     logoutUser();
   };
@@ -19,6 +22,17 @@ const Header = ({ loginData, logoutUser }) => {
   useEffect(() => {
     console.log(toggle);
   }, [toggle]);
+
+  useEffect(() => {
+    if (!loginData.loggedIn) {
+      console.log("Logout");
+      if (
+        history.location.pathname !== "/Login" &&
+        history.location.pathname !== "/"
+      )
+        history.push("/");
+    }
+  }, [loginData]);
 
   return (
     <Fragment>

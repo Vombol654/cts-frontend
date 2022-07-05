@@ -6,6 +6,7 @@ import axios from "axios";
 import "../Styles/details.css";
 import "../Styles/mentorDetailPage.css";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 const customStyles = {
   content: {
@@ -41,23 +42,28 @@ const ratingComponent = (rating) => {
   return rate;
 };
 
-const Details = () => {
+const Details = ({ loginData }) => {
+  console.log(loginData);
   const [mentorData, setMentorData] = useState({
     _id: 0,
     about: "About Mentor",
-    name: "Mentor Name",
-    designation: "Mentor Designation",
-    language: "Language",
-    expert: "Expert",
+    mentor: {
+      name: "Mentor Name",
+      designation: "Mentor Designation",
+      city: "City",
+      language: "Language",
+      imageUrl: "",
+      company: "Company Name",
+      phone: "Phone Number",
+      email: "Mentor Email Id",
+      skills: [],
+    },
     rating: 0,
     reviewCount: 0,
-    features: [],
-    images: "",
-    phone: "Phone Number",
-    email: "Mentor Email Id",
+    services: [],
     spotsLeft: 0,
-    company: "Cognizant Technology Solutions",
     tag: "Top Mentor",
+    cost: 0,
     callCount: 2,
   });
   const location = useLocation();
@@ -65,37 +71,47 @@ const Details = () => {
   const { mentorId } = qs;
   useEffect(() => {
     axios({
-      url: `http://localhost:8085/mentordetail/${mentorId}`,
+      url: `http://localhost:8085/mentorshipdetail/${mentorId}`,
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => {
-        console.log(res.data.mentor);
-        setMentorData(res.data.mentor);
+        console.log(res.data.mentorship);
+        setMentorData({ ...res.data.mentorship[0] });
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    console.log(mentorData);
+  }, [mentorData]);
+
   const {
     _id,
     about,
-    designation,
-    expert,
-    rating,
-    reviewCount = 40,
-    images,
-    name,
-    language,
-    city,
-    features,
+    rating = 0,
+    reviewCount = 0,
     cost,
+    services,
     spotsLeft = 100,
-    company = "Cognizant Technology Solutions",
     tag = "Top",
     callCount = 2,
   } = mentorData;
 
+  const {
+    name = "",
+    designation,
+    city,
+    language,
+    imageUrl,
+    company,
+    phone,
+    email,
+    skills,
+  } = mentorData.mentor;
+  console.log(mentorData);
   return (
     <div className="mentor-details-container">
       {/* <div className="navigate-container"> */}
@@ -112,7 +128,8 @@ const Details = () => {
       <div className="mentor-page">
         {/* <span className="spots-left">Only {spotsLeft} Spots Left</span> */}
         <div className="mentor-img">
-          <img src={require(`../${images}`)} alt={name} />
+          {/* <img src={require(`../${images}`)} alt={name} /> */}
+          <img src={imageUrl} alt={name} />
         </div>
         <div className="mentor-details">
           <div className="mentor-details-header">
@@ -138,14 +155,14 @@ const Details = () => {
               </p>
             </div>
             <div className="locality">
-            <div className="location">
-              <ion-icon class="md hydrated icon" name="pin"></ion-icon>
-              <span>{city}</span>
-            </div>
-            <div className="language">
-              <ion-icon class="md hydrated icon" name="mic"></ion-icon>
-              <span>{language}</span>
-            </div>
+              <div className="location">
+                <ion-icon class="md hydrated icon" name="pin"></ion-icon>
+                <span>{city}</span>
+              </div>
+              <div className="language">
+                <ion-icon class="md hydrated icon" name="mic"></ion-icon>
+                <span>{language}</span>
+              </div>
             </div>
             {reviewCount > 0 && (
               <div className="mentor-review">
@@ -157,10 +174,37 @@ const Details = () => {
                 <span className="review-count">({reviewCount} reviews)</span>
               </div>
             )}
+            {reviewCount === 0 && (
+              <div className="mentor-review">
+                <div className="ratings">
+                  <ion-icon
+                    name="star-outline"
+                    class="md hydrated icon"
+                  ></ion-icon>
+                  <ion-icon
+                    name="star-outline"
+                    class="md hydrated icon"
+                  ></ion-icon>
+                  <ion-icon
+                    name="star-outline"
+                    class="md hydrated icon"
+                  ></ion-icon>
+                  <ion-icon
+                    name="star-outline"
+                    class="md hydrated icon"
+                  ></ion-icon>
+                  <ion-icon
+                    name="star-outline"
+                    class="md hydrated icon"
+                  ></ion-icon>
+                </div>
+                <span className="review-count">({reviewCount} reviews)</span>
+              </div>
+            )}
           </div>
           <div className="mentor-services">
-            {features.map(({ name }) => {
-              if (name === "chat") {
+            {services.map((service) => {
+              if (service === "chat") {
                 return (
                   <div className="service-item">
                     <ion-icon
@@ -170,7 +214,7 @@ const Details = () => {
                     <span className="service-name">Chat</span>
                   </div>
                 );
-              } else if (name === "call") {
+              } else if (service === "call") {
                 return (
                   <div className="service-item">
                     <ion-icon name="call" class="md hydrated icon"></ion-icon>
@@ -182,7 +226,7 @@ const Details = () => {
                     </span>
                   </div>
                 );
-              } else if (name === "task") {
+              } else if (service === "task") {
                 return (
                   <div className="service-item">
                     <ion-icon
@@ -192,7 +236,7 @@ const Details = () => {
                     <span className="service-name">Task</span>
                   </div>
                 );
-              } else if (name === "handson") {
+              } else if (service === "handson") {
                 return (
                   <div className="service-item">
                     <ion-icon
@@ -209,7 +253,7 @@ const Details = () => {
           <div className="mentor-skills">
             <h3>Skilled Areas :</h3>
             <div className="mentor-skill-sets">
-              {expert.split(",").map((skill) => {
+              {skills.map((skill) => {
                 return <span className="mentor-skill">{skill}</span>;
               })}
             </div>
@@ -259,80 +303,28 @@ const Details = () => {
           <span>/month</span>
         </div>
         <div className="view-profile">
-          <button>Proceed to Payment</button>
+          {loginData.loggedIn && <button>Proceed to Payment</button>}
+          {!loginData.loggedIn && (
+            <Link to="/Login">
+              <button>Login to Proceed</button>
+            </Link>
+          )}
         </div>
       </div>
-
-      {/* <Modal isOpen={loginmodalIsOpen} style={customStyles}>
-        <div>
-          <i
-            className="fa-solid fa-xmark cross"
-            onClick={modalIsCloseHandler}
-          ></i>
-          <div>
-            <form>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="exampleInputEmail1"
-                  aria-describedby="emailHelp"
-                  placeholder="Enter email"
-                  // onChange={()=>userEmailHandler}
-                />
-                <small id="emailHelp" class="form-text text-muted">
-                  We'll never share your email with anyone else.
-                </small>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="text" class="form-control" placeholder="Name" />
-              </div>
-              <small class="form-text text-muted">
-                We'll never store your Password.
-              </small>
-              <button
-                type="submit"
-                class="btn btn-primary"
-                onClick={makePayment}
-              >
-                Submit
-              </button>
-            </form> */}
-      {/* </div>
-        </div>
-      </Modal> */}
     </div>
   );
 };
-export default Details;
 
-{
-  /* <div className="container">
-        <div className="row top">
-          <div className="col-lg-5 col-md-5 col-sm-12 detail-left">
-            <img
-              src={require(`../${mentorData.images}`)}
-              alt="Card image cap"
-            />
-          </div>
-          <div className="col-lg-5 col-md-5 col-sm-12 details-right">
-            <div className="detail-name">{mentorData.name}</div>
-            <div className="detail-des">{mentorData.designation}</div>
-            <div className="detail-exp">{mentorData.expert}</div>
-            <div className="detail-rat">{mentorData.rating}</div>
-            <div className="detail-pho">{mentorData.phone}</div>
-            <div className="detail-ema">{mentorData.email}</div>
-          </div>
-          <div className="col-12 details-low">
-            <p>{mentorData.about}</p>
-            <div className="payment">
-              <button type="button" className="btn btn-info payment-btn">
-                Proceed to Payment
-              </button>
-            </div>
-          </div>
-        </div>
-      </div> */
-}
+const mapStateToProps = (state) => {
+  return {
+    loginData: state.Login,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // logoutUser: () => dispatch(logout()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Details);

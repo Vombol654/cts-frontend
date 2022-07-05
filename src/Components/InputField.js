@@ -10,12 +10,13 @@ const InputField = ({
   value,
   error = "",
   Children = null,
+  style = {},
   ...otherprops
 }) => {
   const [showpassword, setShowPassword] = useState(false);
 
   return (
-    <div className="input-group">
+    <div className="input-group" style={style}>
       <div className="input-field">
         <label
           htmlFor={id}
