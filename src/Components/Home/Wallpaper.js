@@ -97,16 +97,13 @@ const Wallpaper = (props) => {
               </select>
             </div>
             <div className="main-bottom-right">
-              <div className="form-floating mb-3">
                 <input
                   type="text"
                   className="form-control"
                   id="floatingInput"
-                  placeholder="Ananda Sankar Panda"
+                  placeholder="mentor's name"
                   onChange={handleInputText}
                 />
-                <label htmlFor="floatingInput">Mentor's Name</label>
-              </div>
               {showSuggession()}
             </div>
           </div>
