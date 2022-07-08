@@ -1,7 +1,6 @@
 import { Fragment, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import SelectBox from "../SelectBox";
 
 import MainImage from "../../Images/mentoring.png";
 import "../../Styles/wallpaper.css";
@@ -39,8 +38,10 @@ const Wallpaper = (props) => {
     setsuggessionData(suggessionData);
     setinputText(inputText);
   };
-  const handleNavigate = (id) => {
-    history.push(`/details?mentorId=${id}`);
+  const handleNavigate = (mentorship_id, mentor_id) => {
+    history.push(
+      `/details?mentorShipId=${mentorship_id}&mentorId=${mentor_id}`
+    );
   };
 
   const showSuggession = () => {
@@ -63,7 +64,7 @@ const Wallpaper = (props) => {
           <span
             className="suggession"
             key={index}
-            onClick={() => handleNavigate(item.mentor._id)}
+            onClick={() => handleNavigate(item._id, item.mentor._id)}
           >
             {item.mentor.name}
           </span>
@@ -97,7 +98,7 @@ const Wallpaper = (props) => {
               </select>
             </div>
             <div className="main-bottom-right">
-              <div className="form-floating mb-3">
+              <div className="form-floating">
                 <input
                   type="text"
                   className="form-control"

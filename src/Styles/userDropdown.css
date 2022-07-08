@@ -50,3 +50,31 @@
   color: #ccccff !important;
   padding: 0 !important;
 }
+
+.update-email {
+  cursor: not-allowed;
+}
+
+.update-profile-img {
+  position: relative;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  height: max-content;
+}
+
+.update-profile-img div:nth-child(1) {
+  margin-bottom: 1.6rem;
+}
+
+.update-profile-img .btn-container {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 3.2rem;
+}
+.update-profile-img .btn-container .btn {
+  font-size: 1.6rem;
+  padding: 0.8rem 1.6rem;
+}

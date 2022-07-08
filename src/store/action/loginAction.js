@@ -1,7 +1,11 @@
 import { loginActionType } from "../actionTypes/loginActionType";
-import { setMentorshipDetails } from "./mentorAction";
+import {
+  setMentorshipDetails,
+  setMentorshipDetailsByMenteeId,
+} from "./mentorAction";
 
-const { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } = loginActionType;
+const { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAIL, UPDATE_USER, LOGOUT } =
+  loginActionType;
 
 const loginStart = () => {
   return {
@@ -23,9 +27,15 @@ const loginFail = (error) => {
   };
 };
 
-const url = "http://localhost:8085/login";
+const updateUser = (user) => {
+  return {
+    type: UPDATE_USER,
+    payload: user,
+  };
+};
 
 export const login = (user) => {
+  const url = "http://localhost:8085/login";
   return (dispatch) => {
     dispatch(loginStart());
     fetch(url, {
@@ -37,10 +47,13 @@ export const login = (user) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         if (data.isAuthenticated) {
           dispatch(loginSuccess(data.user));
           if (data.user.userType === "mentor") {
             dispatch(setMentorshipDetails(data.user._id));
+          } else if (data.user.userType === "mentee") {
+            dispatch(setMentorshipDetailsByMenteeId(data.user._id));
           }
         } else {
           dispatch(loginFail(data.message));
@@ -55,4 +68,28 @@ export const login = (user) => {
 
 export const logout = () => {
   return { type: LOGOUT };
+};
+
+export const update = (user) => {
+  const url =
+    user.userType === "mentee"
+      ? "http://localhost:8085/user/update"
+      : "http://localhost:8085/mentor/update";
+  return (dispatch) => {
+    fetch(url, {
+      method: "PATCH",
+      body: JSON.stringify({ ...user }),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then(({ message, user }) => {
+        console.log(message);
+        if (message === "Updated Successfully...") {
+          dispatch(updateUser(user));
+        } else {
+          alert(message);
+        }
+      })
+      .catch((err) => alert(err));
+  };
 };

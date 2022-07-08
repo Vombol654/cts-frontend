@@ -5,24 +5,8 @@ import "../Styles/CourseCard.css";
 const CourseCard = ({ course, user, mentorships }) => {
   const { _id, name, image, content, skillsRequired = [], mentors } = course;
 
-  const [applied, setApplied] = useState(null);
-  const [approved, setApproved] = useState(null);
-
   const history = useHistory();
 
-  useEffect(() => {
-    setApproved(
-      mentors.find((mentor) => {
-        return mentor._id === user._id;
-      })
-    );
-
-    setApplied(
-      mentorships.find((mentor) => {
-        return mentor.course_id === _id;
-      })
-    );
-  }, [mentorships]);
   const redirectToCourseFormPage = async (course) => {
     await pushdataInsessionStorage(course)
       .then((res) => {
@@ -42,6 +26,14 @@ const CourseCard = ({ course, user, mentorships }) => {
     });
   };
 
+  const getStatus = (course_id) => {
+    const mentorship = mentorships.find((mentorship) => {
+      return mentorship.course_id === course_id;
+    });
+    return mentorship !== undefined ? mentorship.status : "";
+  };
+
+  let status = getStatus(_id);
   return (
     <div className="course-card">
       <div className="course-img">
@@ -54,17 +46,17 @@ const CourseCard = ({ course, user, mentorships }) => {
           {skillsRequired.length === 0 ? (
             <h5>No Requirements Needed...</h5>
           ) : null}
-          {skillsRequired.map((skill) => {
-            return <span>{skill}</span>;
+          {skillsRequired.map((skill, i) => {
+            return <span key={i}>{skill}</span>;
           })}
         </div>
       </div>
       <p className="summary">{content}</p>
-      {approved ? (
+      {status === "accepted" ? (
         <button className="course-apply-btn" disabled>
           Go To Course
         </button>
-      ) : applied ? (
+      ) : status === "proposed" ? (
         <button className="course-apply-btn" disabled>
           Proposed
         </button>

@@ -97,6 +97,9 @@ export const validate = async ({ field, value, setState }, match = "") => {
       if (value === "") {
         err = "Please fill your Email ID";
         valid = false;
+      } else if (value.match(/[A-Z]/g)) {
+        err = "Email ID can't contains UpperCase letter";
+        valid = false;
       } else if (value.substring(length - 10, length) !== "@gmail.com") {
         err = "Invalid Email ID";
         valid = false;

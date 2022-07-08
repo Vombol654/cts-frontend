@@ -10,6 +10,7 @@ const { GET_COURSES_START, GET_COURSES_SUCCESS, GET_COURSES_FAIL } =
   coursesActionType;
 
 export const coursesReducer = (state = initialState, { type, payload }) => {
+  console.log(type);
   switch (type) {
     case GET_COURSES_START:
       return { ...state, loading: true };

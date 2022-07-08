@@ -7,6 +7,7 @@ const Layout = (props) => {
   const history = useHistory();
   // const { mentorData } = props;
   const {
+    _id,
     about = "",
     // designation,
     // expert,
@@ -25,7 +26,7 @@ const Layout = (props) => {
     callCount,
   } = props.mentorData;
 
-  const { _id, name, city, language, imageUrl, company, designation, skills } =
+  const { name, city, language, imageUrl, company, designation, skills } =
     props.mentorData.mentor;
 
   const ratingComponent = (rating) => {
@@ -53,8 +54,9 @@ const Layout = (props) => {
     return rate;
   };
 
-  const handleNavigate = (mentorId) => {
-    history.push(`/details?mentorId=${mentorId}`);
+  const handleNavigate = (mentorShipId, mentorId) => {
+    console.log(mentorShipId, mentorId);
+    history.push(`/details?mentorShipId=${mentorShipId}&mentorId=${mentorId}`);
   };
 
   return (
@@ -240,7 +242,11 @@ const Layout = (props) => {
           <span>/month</span>
         </div>
         <div className="view-profile">
-          <button onClick={() => handleNavigate(_id)}>Read More</button>
+          <button
+            onClick={() => handleNavigate(_id, props.mentorData.mentor._id)}
+          >
+            Read More
+          </button>
         </div>
       </div>
     </Fragment>

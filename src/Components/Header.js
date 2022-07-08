@@ -12,32 +12,17 @@ import UserDropdown from "./userDropdown";
 const Header = ({ loginData, logoutUser }) => {
   const [toggle, setToggle] = useState(false);
 
-  const history = useHistory();
-
-  const logoutHandler = () => {
-    logoutUser();
-  };
   const { user, loggedIn } = loginData;
 
   useEffect(() => {
     console.log(toggle);
   }, [toggle]);
 
-  useEffect(() => {
-    // if (!loginData.loggedIn) {
-    //   console.log("Logout");
-    //   if (
-    //     history.location.pathname !== "/Login" &&
-    //     history.location.pathname !== "/"
-    //   )
-    //     history.push("/");
-    // }
-  }, [loginData]);
 
   return (
     <Fragment>
       <header className="content-top">
-        <div className="container">
+        <div className="container-fluid">
           <nav className="nav-bar navbar-expand-lg">
             <a className="navbar-brand logo" href="#">
               <img src={Icons} alt="" width="50" height="40" />
@@ -66,14 +51,23 @@ const Header = ({ loginData, logoutUser }) => {
             >
               <ul className="navbar-nav mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/">
-                    Home
-                  </Link>
+                  {user["userType"] !== "admin" && (
+                    <Link className="nav-link" to="/">
+                      Home
+                    </Link>
+                  )}
                 </li>
-                {user["userType"] !== "mentor" && user["userType"] !== "admin" && (
+                {user["userType"] === "mentee" && (
                   <li className="nav-item">
                     <Link className="nav-link" to="/filter">
                       Mentors
+                    </Link>
+                  </li>
+                )}
+                {user["userType"] === "mentee" && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/MyMentors">
+                      My Mentors
                     </Link>
                   </li>
                 )}
@@ -81,6 +75,20 @@ const Header = ({ loginData, logoutUser }) => {
                   <li className="nav-item">
                     <Link className="nav-link" to="/Courses">
                       Courses
+                    </Link>
+                  </li>
+                )}
+                {user["userType"] === "mentor" && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/myMentorships">
+                      My Mentorships
+                    </Link>
+                  </li>
+                )}
+                {user["userType"] === "mentor" && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/MentorRequest">
+                      All Requests
                     </Link>
                   </li>
                 )}
@@ -98,17 +106,7 @@ const Header = ({ loginData, logoutUser }) => {
                     </Link>
                   </li>
                 )}
-                {loggedIn && (
-                  <UserDropdown
-                    user={user}
-                    name={
-                      user["userType"] === "mentee"
-                        ? user["firstname"]
-                        : user["name"]
-                    }
-                    Logout={logoutHandler}
-                  />
-                )}
+                {loggedIn && <UserDropdown />}
               </ul>
             </div>
           </nav>

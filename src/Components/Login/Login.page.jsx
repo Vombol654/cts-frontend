@@ -47,7 +47,11 @@ const Login = ({ user, signed, loginUser, setMentorship }) => {
   };
 
   useEffect(() => {
-    if (!showToast && user.loggedIn) {
+    if (!showToast && user.loggedIn && user.user.userType === "admin") {
+      setTimeout(() => {
+        history.push("/admin");
+      }, 500);
+    } else if (!showToast && user.loggedIn && user.user.userType !== "admin") {
       setTimeout(() => {
         history.push("/");
       }, 500);
@@ -111,7 +115,7 @@ const Login = ({ user, signed, loginUser, setMentorship }) => {
           />
         </Form>
         <p className="no-account">
-          Don't have an account <Link to="/SignUp">Resgister here!</Link>
+          Don't have an account <Link to="/SignUp">Register here!</Link>
         </p>
       </div>
       <Toast show={showToast} onClose={toggleToast} className="toast-bg mt-5">
@@ -120,7 +124,7 @@ const Login = ({ user, signed, loginUser, setMentorship }) => {
             <strong className="me-auto">LoggedIn Successfully...</strong>
           )}
           {user.loading && <strong className="me-auto">Loading</strong>}
-          {user.error !== "" && (
+          {!user.loggedIn && user.error !== "" && (
             <strong className="me-auto">Login Failed</strong>
           )}
         </Toast.Header>
@@ -140,6 +144,11 @@ const Login = ({ user, signed, loginUser, setMentorship }) => {
         {user.loggedIn &&
           !user.loading &&
           user["user"]["userType"] === "mentor" && (
+            <Toast.Body>Hello, {user.user.name}.</Toast.Body>
+          )}
+        {user.loggedIn &&
+          !user.loading &&
+          user["user"]["userType"] === "admin" && (
             <Toast.Body>Hello, {user.user.name}.</Toast.Body>
           )}
         {user.error && !user.loading && (

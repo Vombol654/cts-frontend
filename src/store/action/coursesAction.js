@@ -25,6 +25,7 @@ const getCourseFail = (error) => {
 
 const url = "http://localhost:8085/coursetypes";
 export const getCourses = () => {
+  console.log("GET_COURSES");
   return (dispatch) => {
     dispatch(getCourseStart());
     fetch(url)

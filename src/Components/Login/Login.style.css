@@ -25,3 +25,9 @@
   background-color: #292933;
   color: #ccccff;
 }
+
+.toast-header {
+  background-color: #292933;
+  color: #ccccff;
+  border-bottom: 1px solid #ccccff;
+}
